@@ -5,10 +5,8 @@ import { data } from "../mockData/pipefy.js";
 const iteration = async () => {
   const prospects = [...(await getProspects(1)), ...(await getProspects(2))];
 
-  console.log(prospects);
   try {
-    const asd = await external.post("", prospects);
-    console.log(asd);
+    external.post("", prospects);
   } catch (err) {
     console.log("Erro no post dos prospects");
     console.log(err);

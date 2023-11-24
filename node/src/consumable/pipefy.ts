@@ -31,6 +31,7 @@ const getPipefyProspects = async (userType: 1 | 2) => {
     );
     return data;
   } catch (err) {
+    console.log("Erro na captura de dados do Pipefy");
     console.log(err);
   }
 };
