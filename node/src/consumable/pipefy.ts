@@ -7,7 +7,7 @@ const pipeIds = {
 
 const getPipefyProspects = async (userType: 1 | 2) => {
   try {
-    const { data } = axios.post(
+    const data = axios.post(
       "https://api.pipefy.com/graphql",
       {
         query: /* GraphQL */ `{

@@ -1,5 +1,5 @@
-import external from "../external/crm.js";
 import consumable from "../consumable/crm.js";
+import external from "../external/crm.js";
 
 const iteration = async () => {
   const crmChatTypes = ["ociosos", "heavy", "recentes"];
@@ -21,7 +21,9 @@ const iteration = async () => {
           console.log(err);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (err.response.status === 404) continue;
+
       console.log("Erro na iteração pelo CRM ", crmChatTypes[i]);
       console.log(err);
     }

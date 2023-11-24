@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const { EMAIL_USER, EMAIL_PASS } = process.env;
-console.log(EMAIL_USER, EMAIL_PASS);
 const transporter = nodemailer_1.default.createTransport({
     service: "Outlook365",
     auth: {
@@ -19,12 +18,10 @@ const enviarEmail = (email) => {
         to: email,
         subject: "MANUALL: Você recebeu uma mensagem!",
         text: "Nosso assistente virtual Manuel te enviou uma mensagem",
-    }, (err, info) => {
+    }, (err) => {
         if (err) {
+            console.log("Erro no envio de email para o usuário ", email);
             console.log(err);
-        }
-        else {
-            console.log("Email enviado: " + info.response);
         }
     });
 };
