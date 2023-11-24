@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const { EMAIL_USER, EMAIL_PASS } = process.env;
+const { EMAIL_USER, EMAIL_PASS, MAIL_SENDING } = process.env;
 
 const transporter = nodemailer.createTransport({
   service: "Outlook365",
@@ -27,4 +27,6 @@ const enviarEmail = (email: string) => {
   );
 };
 
-export default enviarEmail;
+const fakeEnviarEmail = (email: string) => {};
+
+export default MAIL_SENDING === "true" ? enviarEmail : fakeEnviarEmail;

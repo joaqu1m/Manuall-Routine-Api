@@ -9,7 +9,7 @@ export const data = {
   },
   // FORMULÁRIO INICIAL - CONTRATANTE E PRESTADOR
   "A partir de qual canal você chegou aqui?": {
-    dbCol: "opt_canal",
+    dbCol: "optCanal",
     opts: {
       "Redes Sociais": 1,
       Pesquisa: 2,
@@ -28,7 +28,7 @@ export const data = {
     format: (value: string) => value.substring(4).replace(/[^0-9]+/g, ""),
   },
   "Você mora em:": {
-    dbCol: "opt_cidade",
+    dbCol: "optCidade",
     opts: {
       "São Paulo": 1,
       "São Bernardo do Campo": 2,
@@ -40,7 +40,7 @@ export const data = {
     },
   },
   "Já conhece a Manuall?": {
-    dbCol: "bln_conhece_manuall",
+    dbCol: "blnConheceManuall",
     opts: {
       Sim: true,
       Não: false,
@@ -48,7 +48,7 @@ export const data = {
   },
   // LEAD CONTRATANTE
   "Qual(is) dessas áreas de serviços você está buscando?": {
-    dbCol: "area_id",
+    dbCol: "areaId",
     opts: {
       Jardineiro: 1,
       Pintor: 2,
@@ -62,14 +62,14 @@ export const data = {
   },
   "Você teria interesse em aprender algum dos serviços citados anteriormente?":
     {
-      dbCol: "bln_aprender",
+      dbCol: "blnAprender",
       opts: {
         "Sim, possuo interesse.": true,
         "Não, quero apenas contratar o prestador de serviço.": false,
       },
     },
   "Você tem interesse pela Manuall?": {
-    dbCol: "bln_interesse_manuall",
+    dbCol: "blnInteresseManuall",
     opts: {
       Sim: true,
       Não: false,
@@ -77,7 +77,7 @@ export const data = {
   },
   // LEAD - PRESTADOR
   "Selecione a sua área de serviço de interesse:": {
-    dbCol: "area_id",
+    dbCol: "areaId",
     opts: {
       Jardineiro: 1,
       Pintor: 2,
@@ -90,7 +90,7 @@ export const data = {
     },
   },
   "Você teria interesse em ensinar um pouco sobre a sua área ao outro?": {
-    dbCol: "bln_interesse_ensinar",
+    dbCol: "blnInteresseEnsinar",
     opts: {
       "Sim, possuo interesse.": true,
       "Não, quero apenas prestar meu serviço.": false,
@@ -98,7 +98,7 @@ export const data = {
   },
   // OPORTUNIDADE CONTRATANTE
   "Utilizou o cupom e se tornou um cliente Contratante da Manuall?": {
-    dbCol: "bln_cupom",
+    dbCol: "blnCupom",
     opts: {
       Sim: true,
       Não: false,
@@ -106,7 +106,7 @@ export const data = {
   },
   // OPORTUNIDADE PRESTADOR
   "Utilizou o cupom e se tornou um cliente Prestador de Serviço da Manuall?": {
-    dbCol: "bln_cupom",
+    dbCol: "blnCupom",
     opts: {
       Sim: true,
       Não: false,
@@ -114,6 +114,6 @@ export const data = {
   },
   // CLIENTE PERDIDO - CONTRATANTE E PRESTADOR
   "Explique sua falta de interesse pela Manuall": {
-    dbCol: "msg_desistencia",
+    dbCol: "msgDesistencia",
   },
 };
