@@ -2,54 +2,68 @@ package route
 
 import (
 	"fmt"
-	"log"
 	"manuall/routine-api/controller"
 	"net/http"
+	"strconv"
 	"time"
 )
 
 var (
-	ticker *time.Ticker
-	quit   chan struct{}
+	crmOn      bool
+	crmTicker  *time.Ticker
+	crmTimeout = 15 * time.Second
 )
 
 func Crm() {
-	quit = make(chan struct{})
-
 	http.HandleFunc("/crm/on", startRoutine)
 	http.HandleFunc("/crm/off", stopRoutine)
 	http.HandleFunc("/crm/check", checkRoutine)
-
-	log.Fatal(http.ListenAndServe(":3001", nil))
+	http.HandleFunc("/crm/timeout", setTimeout)
 }
 
 func startRoutine(w http.ResponseWriter, r *http.Request) {
-	if ticker == nil {
-		ticker = time.NewTicker(15 * time.Second)
-		go func() {
-			for {
-				select {
-				case <-ticker.C:
-					controller.Crm()
-				case <-quit:
-					ticker.Stop()
-					return
-				}
+	crmOn = true
+	go func() {
+		crmTicker = time.NewTicker(crmTimeout)
+		for {
+			if !crmOn {
+				break
 			}
-		}()
+			select {
+			case <-crmTicker.C:
+				controller.Crm()
+			}
+		}
+	}()
+	if w != nil {
+		fmt.Fprintln(w)
 	}
-	fmt.Fprintln(w)
 }
 
 func stopRoutine(w http.ResponseWriter, r *http.Request) {
-	if ticker != nil {
-		close(quit)
-		ticker = nil
-		quit = make(chan struct{})
+	crmOn = false
+	if w != nil {
+		fmt.Fprintln(w)
 	}
-	fmt.Fprintln(w)
 }
 
 func checkRoutine(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, crmOn)
+}
+
+func setTimeout(w http.ResponseWriter, r *http.Request) {
+	timeoutStr := r.URL.Query().Get("timeout")
+	if timeoutStr != "" {
+		newTimeout, err := strconv.Atoi(timeoutStr)
+		if err != nil {
+			http.Error(w, "Valor inválido", http.StatusBadRequest)
+			return
+		}
+
+		crmTimeout = time.Duration(newTimeout) * time.Second
+
+		stopRoutine(nil, nil)
+		startRoutine(nil, nil)
+	}
 	fmt.Fprintln(w)
 }

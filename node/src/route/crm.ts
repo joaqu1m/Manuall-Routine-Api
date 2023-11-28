@@ -29,6 +29,4 @@ router.patch("/change/timeout", (_, res) => {
   res.status(200).send();
 });
 
-start(undefined, undefined);
-
 export default router;
