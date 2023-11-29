@@ -2,7 +2,6 @@ package route
 
 import (
 	"fmt"
-	"manuall/routine-api/consumable"
 	"manuall/routine-api/controller"
 	"net/http"
 	"strconv"
@@ -12,12 +11,10 @@ import (
 var (
 	crmOn      bool
 	crmTicker  *time.Ticker
-	crmTimeout = 3 * time.Second
+	crmTimeout = 15 * time.Second
 )
 
 func Crm() {
-	consumable.Crm("joaquim.pires@sptech.school")
-	controller.Crm()
 	http.HandleFunc("/crm/on", startRoutine)
 	http.HandleFunc("/crm/off", stopRoutine)
 	http.HandleFunc("/crm/check", checkRoutine)

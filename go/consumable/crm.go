@@ -1,76 +1,28 @@
 package consumable
 
 import (
-	"crypto/tls"
 	"fmt"
 	"net/smtp"
+	"os"
 )
 
 func Crm(to string) {
-	from := "xxxxxxxxxx"
-	password := "xxxxxxxxxx"
+	from := os.Getenv("EMAIL_ADDRESS")
+	password := os.Getenv("EMAIL_PASS")
 
-	smtpHost := "smtp.office365.com"
+	smtpServer := "smtp.gmail.com"
 	smtpPort := 587
 
-	subject := "Test Email"
-	body := "This is a test email sent using Golang."
+	subject := "MANUALL: Voce recebeu uma mensagem!"
+	body := "Nosso assistente virtual Manuel te enviou uma mensagem"
 
-	message := "Subject: " + subject + "\r\n" +
-		"\r\n" + body
+	message := fmt.Sprintf("Subject: %s\r\n\r\n%s", subject, body)
 
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	auth := smtp.PlainAuth("", from, password, smtpServer)
 
-	tlsConfig := &tls.Config{
-		InsecureSkipVerify: true,
-		ServerName:         smtpHost,
-	}
-
-	err := sendWithStartTLS(smtpHost, smtpPort, auth, from, []string{to}, []byte(message), tlsConfig)
+	err := smtp.SendMail(fmt.Sprintf("%s:%d", smtpServer, smtpPort), auth, from, []string{to}, []byte(message))
 	if err != nil {
 		fmt.Println("Error sending email:", err)
 		return
 	}
-
-	fmt.Println("Email sent successfully!")
-}
-
-func sendWithStartTLS(smtpHost string, smtpPort int, auth smtp.Auth, from string, to []string, message []byte, tlsConfig *tls.Config) error {
-	client, err := smtp.Dial(fmt.Sprintf("%s:%d", smtpHost, smtpPort))
-	if err != nil {
-		return err
-	}
-	defer client.Close()
-
-	if err := client.StartTLS(tlsConfig); err != nil {
-		return err
-	}
-
-	if err := client.Auth(auth); err != nil {
-		return err
-	}
-
-	if err := client.Mail(from); err != nil {
-		return err
-	}
-	for _, addr := range to {
-		if err := client.Rcpt(addr); err != nil {
-			return err
-		}
-	}
-
-	wc, err := client.Data()
-	if err != nil {
-		return err
-	}
-	_, err = wc.Write(message)
-	if err != nil {
-		return err
-	}
-	err = wc.Close()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

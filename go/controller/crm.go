@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"manuall/routine-api/consumable"
 	"manuall/routine-api/external"
 	"net/http"
 )
@@ -14,34 +15,24 @@ type Usuario struct {
 }
 
 func Crm() {
-	ociososResp := external.Ociocos()
-	ociososData, err := processResponse(ociososResp)
+	executarCrm(external.Ociocos(), "ociosos")
+	executarCrm(external.Heavy(), "heavy")
+	executarCrm(external.Recentes(), "recentes")
+}
+
+func executarCrm(resp *http.Response, tipo string) {
+	if resp.StatusCode != 200 {
+		return
+	}
+
+	ociososData, err := processResponse(resp)
 	if err != nil {
-		fmt.Println("Error processing Ociosos response:", err)
+		fmt.Println(fmt.Sprintf("Error processing %s response:", tipo), err)
 		return
 	}
 	for _, item := range ociososData {
-		external.IniciarCrm("ociosos", item.ID)
-	}
-
-	heavyResp := external.Heavy()
-	heavyData, err := processResponse(heavyResp)
-	if err != nil {
-		fmt.Println("Error processing Ociosos response:", err)
-		return
-	}
-	for _, item := range heavyData {
-		external.IniciarCrm("heavy", item.ID)
-	}
-
-	recentesResp := external.Recentes()
-	recentesData, err := processResponse(recentesResp)
-	if err != nil {
-		fmt.Println("Error processing Ociosos response:", err)
-		return
-	}
-	for _, item := range recentesData {
-		external.IniciarCrm("recentes", item.ID)
+		external.IniciarCrm(tipo, item.ID)
+		consumable.Crm(item.Email)
 	}
 }
 

@@ -3,15 +3,14 @@ package external
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 )
 
-const (
-	baseUrl = "http://localhost:8080/routine/crm"
-)
-
 func Ociocos() *http.Response {
-	url := baseUrl + "/ociosos"
+	crmBaseUrl := fmt.Sprintf("%scrm", os.Getenv("API_URL"))
+
+	url := crmBaseUrl + "/ociosos"
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
@@ -28,7 +27,9 @@ func Ociocos() *http.Response {
 }
 
 func Heavy() *http.Response {
-	url := baseUrl + "/heavy"
+	crmBaseUrl := fmt.Sprintf("%scrm", os.Getenv("API_URL"))
+
+	url := crmBaseUrl + "/heavy"
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
@@ -45,7 +46,9 @@ func Heavy() *http.Response {
 }
 
 func Recentes() *http.Response {
-	url := baseUrl + "/recentes"
+	crmBaseUrl := fmt.Sprintf("%scrm", os.Getenv("API_URL"))
+
+	url := crmBaseUrl + "/recentes"
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
@@ -62,8 +65,9 @@ func Recentes() *http.Response {
 }
 
 func IniciarCrm(crmType string, id int) {
+	crmBaseUrl := fmt.Sprintf("%scrm", os.Getenv("API_URL"))
 
-	url := baseUrl + "/" + crmType + "/iniciarCrm/" + strconv.Itoa(id)
+	url := crmBaseUrl + "/" + crmType + "/iniciarCrm/" + strconv.Itoa(id)
 
 	req, _ := http.NewRequest("POST", url, nil)
 	req.Header = http.Header{
