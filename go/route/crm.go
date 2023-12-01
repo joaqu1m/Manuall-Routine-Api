@@ -15,13 +15,13 @@ var (
 )
 
 func Crm() {
-	http.HandleFunc("/crm/on", startRoutine)
-	http.HandleFunc("/crm/off", stopRoutine)
-	http.HandleFunc("/crm/check", checkRoutine)
-	http.HandleFunc("/crm/timeout", setTimeout)
+	http.HandleFunc("/crm/on", startRoutineCrm)
+	http.HandleFunc("/crm/off", stopRoutineCrm)
+	http.HandleFunc("/crm/check", checkRoutineCrm)
+	http.HandleFunc("/crm/timeout", setTimeoutCrm)
 }
 
-func startRoutine(w http.ResponseWriter, r *http.Request) {
+func startRoutineCrm(w http.ResponseWriter, r *http.Request) {
 	crmOn = true
 	go func() {
 		crmTicker = time.NewTicker(crmTimeout)
@@ -40,18 +40,18 @@ func startRoutine(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func stopRoutine(w http.ResponseWriter, r *http.Request) {
+func stopRoutineCrm(w http.ResponseWriter, r *http.Request) {
 	crmOn = false
 	if w != nil {
 		fmt.Fprintln(w)
 	}
 }
 
-func checkRoutine(w http.ResponseWriter, r *http.Request) {
+func checkRoutineCrm(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, crmOn)
 }
 
-func setTimeout(w http.ResponseWriter, r *http.Request) {
+func setTimeoutCrm(w http.ResponseWriter, r *http.Request) {
 	timeoutStr := r.URL.Query().Get("timeout")
 	if timeoutStr != "" {
 		newTimeout, err := strconv.Atoi(timeoutStr)
@@ -62,8 +62,8 @@ func setTimeout(w http.ResponseWriter, r *http.Request) {
 
 		crmTimeout = time.Duration(newTimeout) * time.Second
 
-		stopRoutine(nil, nil)
-		startRoutine(nil, nil)
+		stopRoutineCrm(nil, nil)
+		startRoutineCrm(nil, nil)
 	}
 	fmt.Fprintln(w)
 }

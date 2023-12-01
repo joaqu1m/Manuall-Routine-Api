@@ -15,10 +15,10 @@ var (
 )
 
 func Pipefy() {
-	http.HandleFunc("/pipefy/on", startRoutine)
-	http.HandleFunc("/pipefy/off", stopRoutine)
-	http.HandleFunc("/pipefy/check", checkRoutine)
-	http.HandleFunc("/pipefy/timeout", setTimeout)
+	http.HandleFunc("/pipefy/on", startRoutinePipefy)
+	http.HandleFunc("/pipefy/off", stopRoutinePipefy)
+	http.HandleFunc("/pipefy/check", checkRoutinePipefy)
+	http.HandleFunc("/pipefy/timeout", setTimeoutPipefy)
 }
 
 func startRoutinePipefy(w http.ResponseWriter, r *http.Request) {
@@ -62,8 +62,8 @@ func setTimeoutPipefy(w http.ResponseWriter, r *http.Request) {
 
 		pipefyTimeout = time.Duration(newTimeout) * time.Second
 
-		stopRoutine(nil, nil)
-		startRoutine(nil, nil)
+		stopRoutinePipefy(nil, nil)
+		startRoutinePipefy(nil, nil)
 	}
 	fmt.Fprintln(w)
 }

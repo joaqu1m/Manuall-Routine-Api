@@ -9,13 +9,13 @@ import (
 )
 
 func Pipefy() {
-	executarTipo(1)
-	executarTipo(2)
+	executarTipo(1, "PIPEFY_CONTRATANTE_PIPE_ID")
+	executarTipo(2, "PIPEFY_PRESTADOR_PIPE_ID")
 }
 
-func executarTipo(tipo int) {
+func executarTipo(tipo int, pipeId string) {
 
-	graphqlResponse := consumable.Pipefy()
+	graphqlResponse := consumable.Pipefy(pipeId)
 
 	var prospects []map[string]interface{}
 
