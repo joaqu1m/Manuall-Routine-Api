@@ -74,11 +74,9 @@ func IniciarCrm(crmType string, id int) {
 		"RoutineAuth": {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
 	}
 	client := &http.Client{}
-	resp, err := client.Do(req)
+	_, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("Erro na iteração pelo CRM: %v\n", err)
 		return
 	}
-
-	fmt.Println(resp.StatusCode)
 }
