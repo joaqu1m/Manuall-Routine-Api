@@ -21,7 +21,7 @@ func PostarProspects(respBody []map[string]interface{}) {
 
 	req, _ := http.NewRequest("POST", crmBaseUrl, body)
 	req.Header = http.Header{
-		"RoutineAuth":  {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
+		"RoutineAuth":  {os.Getenv("ROUTINE_AUTH")},
 		"Content-Type": {"application/json"},
 	}
 	client := &http.Client{}

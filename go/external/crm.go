@@ -14,7 +14,7 @@ func Ociocos() *http.Response {
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
-		"RoutineAuth": {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
+		"RoutineAuth": {os.Getenv("ROUTINE_AUTH")},
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -33,7 +33,7 @@ func Heavy() *http.Response {
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
-		"RoutineAuth": {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
+		"RoutineAuth": {os.Getenv("ROUTINE_AUTH")},
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -52,7 +52,7 @@ func Recentes() *http.Response {
 
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header = http.Header{
-		"RoutineAuth": {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
+		"RoutineAuth": {os.Getenv("ROUTINE_AUTH")},
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -71,7 +71,7 @@ func IniciarCrm(crmType string, id int) {
 
 	req, _ := http.NewRequest("POST", url, nil)
 	req.Header = http.Header{
-		"RoutineAuth": {"G8xmGt0RU4e1GXkrr7EcDAUfhU9QGeyDzBqZybtyEK0PQ3u0btMwGtImwMBU4iDc"},
+		"RoutineAuth": {os.Getenv("ROUTINE_AUTH")},
 	}
 	client := &http.Client{}
 	_, err := client.Do(req)
