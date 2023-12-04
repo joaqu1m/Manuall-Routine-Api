@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -14,14 +15,17 @@ var (
 	pipefyTimeout = 15 * time.Second
 )
 
-func Pipefy() {
-	http.HandleFunc("/pipefy/on", startRoutinePipefy)
-	http.HandleFunc("/pipefy/off", stopRoutinePipefy)
-	http.HandleFunc("/pipefy/check", checkRoutinePipefy)
-	http.HandleFunc("/pipefy/timeout", setTimeoutPipefy)
+func Pipefy(router *mux.Router) {
+	router.HandleFunc("/pipefy/on", startRoutinePipefy)
+	router.HandleFunc("/pipefy/off", stopRoutinePipefy)
+	router.HandleFunc("/pipefy/check", checkRoutinePipefy)
+	router.HandleFunc("/pipefy/timeout", setTimeoutPipefy)
 }
 
 func startRoutinePipefy(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	pipefyOn = true
 	go func() {
 		pipefyTicker = time.NewTicker(pipefyTimeout)
@@ -41,6 +45,9 @@ func startRoutinePipefy(w http.ResponseWriter, r *http.Request) {
 }
 
 func stopRoutinePipefy(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	pipefyOn = false
 	if w != nil {
 		fmt.Fprintln(w)
@@ -48,10 +55,16 @@ func stopRoutinePipefy(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkRoutinePipefy(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	fmt.Fprintln(w, pipefyOn)
 }
 
 func setTimeoutPipefy(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	timeoutStr := r.URL.Query().Get("timeout")
 	if timeoutStr != "" {
 		newTimeout, err := strconv.Atoi(timeoutStr)

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -14,14 +15,17 @@ var (
 	crmTimeout = 15 * time.Second
 )
 
-func Crm() {
-	http.HandleFunc("/crm/on", startRoutineCrm)
-	http.HandleFunc("/crm/off", stopRoutineCrm)
-	http.HandleFunc("/crm/check", checkRoutineCrm)
-	http.HandleFunc("/crm/timeout", setTimeoutCrm)
+func Crm(router *mux.Router) {
+	router.HandleFunc("/crm/on", startRoutineCrm).Methods("GET", "OPTIONS")
+	router.HandleFunc("/crm/off", stopRoutineCrm).Methods("GET", "OPTIONS")
+	router.HandleFunc("/crm/check", checkRoutineCrm).Methods("GET", "OPTIONS")
+	router.HandleFunc("/crm/timeout", setTimeoutCrm).Methods("POST", "OPTIONS")
 }
 
 func startRoutineCrm(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	crmOn = true
 	go func() {
 		crmTicker = time.NewTicker(crmTimeout)
@@ -41,6 +45,9 @@ func startRoutineCrm(w http.ResponseWriter, r *http.Request) {
 }
 
 func stopRoutineCrm(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	crmOn = false
 	if w != nil {
 		fmt.Fprintln(w)
@@ -48,10 +55,16 @@ func stopRoutineCrm(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkRoutineCrm(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	fmt.Fprintln(w, crmOn)
 }
 
 func setTimeoutCrm(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	timeoutStr := r.URL.Query().Get("timeout")
 	if timeoutStr != "" {
 		newTimeout, err := strconv.Atoi(timeoutStr)

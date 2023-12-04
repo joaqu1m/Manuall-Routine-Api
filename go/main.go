@@ -4,12 +4,15 @@ import (
 	"log"
 	"manuall/routine-api/route"
 	"net/http"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	SetEnvs()
-	route.Crm()
-	route.Pipefy()
+	router := mux.NewRouter()
 
-	log.Fatal(http.ListenAndServe(":3001", nil))
+	SetEnvs()
+	route.Crm(router)
+	route.Pipefy(router)
+
+	log.Fatal(http.ListenAndServe(":3001", router))
 }
